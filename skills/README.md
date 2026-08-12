@@ -11,6 +11,12 @@
 Claude Code ищет скиллы в `~/.claude/skills/`. Симлинк, чтобы не держать копию:
 
 ```bash
+make skills-link   # из корня пакета: линкует всё, что лежит в skills/
+```
+
+Руками то же самое:
+
+```bash
 ln -s ~/Work/github/jtprogru/mishka-ds/skills/mishka-deck ~/.claude/skills/mishka-deck
 ```
 

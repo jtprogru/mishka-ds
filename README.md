@@ -26,15 +26,18 @@ React-компоненты собственных стилей не имеют: 
 ## Установка
 
 ```bash
-npm install
-npm run build      # dist/, tokens.json, mermaid, unocss + проверка контрастов
-npm run demo       # витрина на http://localhost:4321/demo/, следит за исходниками
-npm run contrast   # только проверка контрастов
+make install    # npm ci при наличии лока, иначе npm install
+make build      # dist/, tokens.json, mermaid, unocss + проверка контрастов
+make demo       # витрина на http://localhost:4321/demo/, следит за исходниками
+make check      # css + typecheck + contrast, без сборки
+make help       # весь список
 ```
+
+Makefile — обёртка над `scripts/*.mjs` для того, кто пакет разрабатывает. Npm-скрипты остались на месте и делают то же самое: `npm run build`, `npm run demo`, `npm run contrast`, `npm run typecheck`. Отдельными целями вынесено то, чего в npm-скриптах не было: `make css` — структурная проверка стилей, `make mark` — пересборка знака из артворка, `make fonts` — нарезка сабсетов (нужен `pyftsubset`, поэтому шаг ручной), `make skills-link` — симлинк `skills/*` в `~/.claude/skills`.
 
 Витрина показывает обе темы рядом; `#light` или `#dark` в адресе оставляет одну. Макет визитки — `brand/card.html`, печатается прямо из браузера.
 
-`npm run demo` не только собирает и поднимает сервер, но и следит за `src/`, `demo/`, `brand/`, `tokens/` и `scripts/`: правка исходника пересобирает пакет, открытая вкладка перезагружается сама. Отключается через `node scripts/serve.mjs --no-watch`.
+`make demo` не только собирает и поднимает сервер, но и следит за `src/`, `demo/`, `brand/`, `tokens/` и `scripts/`: правка исходника пересобирает пакет, открытая вкладка перезагружается сама. Без слежения — `make serve`.
 
 ## Что отдаёт пакет
 
