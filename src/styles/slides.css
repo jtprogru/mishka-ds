@@ -1,0 +1,304 @@
+/* ============================================================================
+   mishka-ds · slides.css — слой презентаций.
+
+   Зеркало типографики slidev-theme-bear, переписанное на чистый CSS и токены.
+   В самой теме эти правила живут через UnoCSS `@apply`, то есть существуют
+   только внутри сборки Slidev: ни превью, ни дизайн-агент, ни React их не
+   видят. Здесь тот же ритм выражен обычными правилами, поэтому слайд можно
+   собрать и показать где угодно, а макет совпадёт с настоящим деком.
+
+   Соответствие ступеней — чтобы правки не разъехались:
+     обычный h1        text-4xl 2.25rem  → --fs-3xl
+     h2                text-2xl 1.5rem   → --fs-xl
+     h3 (надзаголовок) text-sm  uppercase→ --fs-sm
+     обложка/раздел    text-6xl 3.75rem  → --fs-display-sm
+     факт              text-8xl 6rem     → --fs-display-lg
+     финал             text-5xl 3rem     → --fs-4xl
+     поля              px-16 py-12       → 4rem / 3rem
+
+   Холст фиксированный 16:9. Слайд не «резиновая страница»: у него есть край,
+   и текст, который до края не дошёл, на проекции выглядит так же, как в макете.
+   ============================================================================ */
+
+.deck {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+}
+
+.slide {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  container-type: inline-size;
+  padding: 3rem 4rem;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  line-height: var(--lh-base);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Превью и раскадровка: слайд как объект на столе, а не как кусок страницы. */
+.deck .slide {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.slide__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* ── Заголовки ─────────────────────────────────────────────────────────── */
+
+.slide__kicker {
+  margin: 0 0 var(--gap-sm);
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-muted);
+}
+
+.slide__title {
+  margin: 0 0 var(--gap-md);
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* Подзаголовок под заголовком: воздуха сверху меньше, чем стандартный —
+   он принадлежит заголовку, а не следующему блоку. */
+.slide__lede {
+  margin: calc(var(--gap-sm) * -1) 0 var(--gap-md);
+  font-size: var(--fs-lg);
+  color: var(--fg-muted);
+}
+
+.slide p { margin: var(--gap-md) 0; }
+.slide p:first-child { margin-top: 0; }
+.slide p:last-child { margin-bottom: 0; }
+
+/* Воздух перед заголовком больше, чем после (BRANDING §3). */
+.slide p + .slide__subtitle,
+.slide ul + .slide__subtitle,
+.slide pre + .slide__subtitle {
+  margin-top: var(--gap-xl);
+}
+
+.slide__subtitle {
+  margin: 0 0 var(--gap-sm);
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+}
+
+/* ── Списки ────────────────────────────────────────────────────────────── */
+
+.slide__list {
+  margin: 0;
+  padding-left: 1.1em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  line-height: var(--lh-loose);
+}
+.slide__list li::marker { color: var(--accent-400); }
+
+/* ── Подвал слайда ─────────────────────────────────────────────────────── */
+
+.slide__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-md);
+  margin-top: var(--gap-md);
+  font-size: var(--fs-sm);
+  color: var(--fg-subtle);
+}
+
+.slide__page {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
+/* ── Обложка ───────────────────────────────────────────────────────────── */
+
+.slide--cover .slide__body,
+.slide--intro .slide__body,
+.slide--statement .slide__body,
+.slide--section .slide__body {
+  justify-content: center;
+}
+
+.slide--cover .slide__title,
+.slide--statement .slide__title,
+.slide--section .slide__title {
+  font-size: var(--fs-display-sm);
+  line-height: var(--lh-tight);
+}
+
+.slide--cover .slide__lede,
+.slide--section .slide__lede {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+}
+
+/* Засечка под заголовком раздела: зритель видит, что начался новый акт.
+   Это и есть то самое единственное акцентное пятно на слайде. */
+.slide--section .slide__title::after {
+  content: "";
+  display: block;
+  width: 4rem;
+  height: 0.25rem;
+  margin-top: var(--gap-md);
+  border-radius: var(--radius-pill);
+  background: var(--accent-400);
+}
+
+/* ── Факт и метрика ────────────────────────────────────────────────────── */
+
+.slide--fact,
+.slide--metric {
+  text-align: center;
+}
+
+.slide--fact .slide__body,
+.slide--metric .slide__body {
+  justify-content: center;
+}
+
+/* Крупный кегль — единственное место, где accent-600 работает как текст:
+   на меньшем размере он проходит только AA large и обычным текстом
+   набираться не должен. */
+.slide--fact .slide__title,
+.slide--metric .slide__title {
+  font-size: var(--fs-display-lg);
+  color: var(--accent-600);
+  margin-bottom: var(--gap-sm);
+}
+
+.slide--fact .slide__lede,
+.slide--metric .slide__lede {
+  margin: 0;
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--fg-muted);
+}
+
+.slide--statement { text-align: center; }
+
+/* ── Цитата ────────────────────────────────────────────────────────────── */
+
+.slide--quote .slide__body { justify-content: center; }
+
+.slide__quote {
+  margin: 0;
+  padding: var(--gap-lg) var(--gap-xl);
+  background: var(--bg-elev);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-2xl);
+  line-height: var(--lh-snug);
+}
+
+/* Внутри figure лежит настоящий blockquote — ради семантики. Базовые стили
+   цитаты дали бы вторую полоску и вторую подложку поверх этой же, поэтому
+   вложенный элемент разстилован полностью. */
+.slide__quote blockquote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.slide__quote p { margin: 0; }
+
+.slide__quote-author::before { content: "— "; }
+.slide__quote-author {
+  margin-top: var(--gap-md);
+  font-size: var(--fs-md);
+  color: var(--fg-muted);
+}
+
+/* ── Две колонки ───────────────────────────────────────────────────────── */
+
+.slide__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-xl);
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.slide__col { min-width: 0; }
+
+/* ── Финал ─────────────────────────────────────────────────────────────── */
+
+.slide--outro .slide__body { justify-content: center; }
+.slide--outro .slide__title { font-size: var(--fs-4xl); }
+
+.slide__links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+}
+
+/* ── Код на слайде ─────────────────────────────────────────────────────── */
+/* Кегль крупнее, чем в статье: код на проекции читают с расстояния,
+   и мелкий моноширинный там первым перестаёт различаться. */
+
+.slide .codeblock pre {
+  font-size: var(--fs-base);
+  line-height: 1.5;
+}
+
+/* ── Маскот ────────────────────────────────────────────────────────────── */
+/* Только тёплые зоны — обложка, разделы, финал (BRANDING §1). */
+
+.slide__mascot {
+  position: absolute;
+  right: 3rem;
+  bottom: 2.5rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Уменьшенный слайд ─────────────────────────────────────────────────── */
+/* Раскадровка: несколько слайдов рядом. Кегль внутри масштабируется от
+   ширины холста, поэтому пропорции не врут — так же выглядит и на экране. */
+
+.deck--storyboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--gap-md);
+}
+
+@container (max-width: 700px) {
+  .slide { padding: 2rem 2.5rem; font-size: 0.9rem; }
+  .slide__title { font-size: var(--fs-xl); }
+  .slide--cover .slide__title,
+  .slide--statement .slide__title,
+  .slide--section .slide__title { font-size: var(--fs-2xl); }
+  .slide--fact .slide__title,
+  .slide--metric .slide__title { font-size: var(--fs-4xl); }
+  .slide__quote { font-size: var(--fs-md); }
+  .slide__links { font-size: var(--fs-sm); }
+}

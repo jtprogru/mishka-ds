@@ -1,0 +1,225 @@
+/* ============================================================================
+   mishka-ds · print.css — бумага и PDF.
+
+   Экран и бумага различаются не «немного», а принципиально: у бумаги нет
+   тёмной темы, нет hover, нет ссылок, которые можно нажать, и нет подсветки
+   фона — заливка стоит денег и пачкает оборот. Поэтому печатный слой не
+   «адаптирует» экранные стили, а перекрывает их: белый фон, чёрный текст,
+   акцент только там, где он несёт смысл.
+
+   Подключается тремя способами:
+     @media print          — резюме и статьи из браузера
+     .sheet                — вёрстка PDF-документа A4
+     .card / .card--back   — визитка 90×50 мм с вылетами
+   ============================================================================ */
+
+/* ─────────────────────── Общий печатный слой ───────────────────────────── */
+
+@media print {
+  :root,
+  :root[data-theme="dark"],
+  :root[data-theme="light"] {
+    /* На бумаге тема всегда одна. Насыщенный фон не печатаем: полосит
+       на лазерной печати и просвечивает на обороте. */
+    --bg:        #ffffff;
+    --bg-elev:   #ffffff;
+    --bg-sunken: #ffffff;
+
+    --fg:        #000000;
+    --fg-muted:  #333333;
+    --fg-subtle: #555555;
+
+    --border:        #999999;
+    --border-strong: #666666;
+
+    /* Акцент темнеет: Sapphire, читаемый на экране, на бумаге выцветает. */
+    --accent:     #0b5566;
+    --accent-400: #0b5566;
+    --accent-700: #0b5566;
+
+    --code-bg:        #f2f2f2;
+    --code-inline-bg: #f2f2f2;
+    --code-fg:        #000000;
+
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-size: var(--print-fs-base);
+    line-height: var(--print-lh-base);
+  }
+
+  /* Интерактивное на бумаге бессмысленно. */
+  .header, .footer, .toc, .search, .post-actions, .theme-toggle,
+  .skip-link, .pagination, .breadcrumbs, .telegram-cta, nav {
+    display: none !important;
+  }
+
+  /* Адрес ссылки печатаем: иначе «см. здесь» превращается в тупик.
+     Внутренние якоря не раскрываем — на бумаге они ничего не значат. */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: var(--print-fs-xs);
+    color: var(--fg-subtle);
+    word-break: break-all;
+  }
+
+  a { color: #000; text-decoration: underline; }
+
+  /* Заголовок не должен висеть последней строкой на странице. */
+  h1, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+  p, li, blockquote { orphans: 3; widows: 3; }
+  pre, table, figure, .callout { break-inside: avoid; page-break-inside: avoid; }
+
+  img { max-width: 100% !important; }
+
+  @page {
+    size: A4;
+    margin: var(--print-margin);
+  }
+}
+
+/* ─────────────────────── Лист A4 (резюме, документ) ────────────────────── */
+/* Работает и на экране — чтобы верстать документ, видя его настоящие поля. */
+
+.sheet {
+  width: var(--print-page-width);
+  min-height: var(--print-page-height);
+  padding: var(--print-margin);
+  margin-inline: auto;
+  background: #fff;
+  color: #000;
+  font-family: var(--font-sans);
+  font-size: var(--print-fs-base);
+  line-height: var(--print-lh-base);
+  box-sizing: border-box;
+}
+
+.sheet + .sheet { margin-top: var(--gap-lg); }
+
+@media screen {
+  .sheet { box-shadow: var(--shadow-lg); }
+}
+
+@media print {
+  .sheet {
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    break-after: page;
+  }
+  .sheet:last-child { break-after: auto; }
+}
+
+/* ─────────────────────── Визитка 90×50 мм ──────────────────────────────── */
+/*
+   Размер с вылетами — 96×56 мм: 90×50 плюс по 3 мм с каждой стороны.
+   Типография режет стопку разом, нож гуляет на десятые доли миллиметра, и
+   без вылетов на краю появляется белая полоска. Внутри — безопасное поле
+   4 мм: всё, что ближе к краю, рискует уехать под нож.
+
+   Лицо — тёмное (Macchiato base), оборот — светлый. Это не декоративный
+   выбор: тёмная сторона держит знак и имя, светлая остаётся читаемой,
+   если карточку сканируют или на ней пишут ручкой.
+*/
+
+.card {
+  position: relative;
+  box-sizing: border-box;
+  width: calc(var(--card-width) + var(--card-bleed) * 2);
+  height: calc(var(--card-height) + var(--card-bleed) * 2);
+  padding: calc(var(--card-bleed) + var(--card-safe));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #24273a;
+  color: #cad3f5;
+  font-family: var(--font-sans);
+  font-size: var(--print-fs-sm);
+  line-height: 1.35;
+  overflow: hidden;
+}
+
+.card--back {
+  background: #ffffff;
+  color: #24273a;
+}
+
+/* Визитка — поверхность с собственным цветом, а не частью страницы. Базовое
+   правило `p { color: var(--fg) }` красило бы имя в цвет текста светлой темы,
+   и на тёмном лице оно тонуло в фоне. Сбрасываем наследование явно. */
+.card p,
+.card li,
+.card h1,
+.card h2,
+.card h3 {
+  color: inherit;
+  margin: 0;
+}
+
+.card__name {
+  font-size: var(--print-fs-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.card__role {
+  margin: 0;
+  color: #a5adcb;
+  font-size: var(--print-fs-sm);
+}
+
+.card--back .card__role { color: #5c5f77; }
+
+/* Контакты — моноширинным: это технические строки, их читают по символам. */
+.card__contacts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: var(--print-fs-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+}
+
+/* Единственное акцентное пятно на карточке. Второго не добавлять. */
+.card__rule {
+  width: 12mm;
+  height: 0.8mm;
+  background: #7dc4e4;
+  border-radius: 0.4mm;
+}
+
+.card--back .card__rule { background: #0b7285; }
+
+/* Метки вылетов — только на экране, в печать не идут. */
+@media screen {
+  .card--guides::after {
+    content: "";
+    position: absolute;
+    inset: var(--card-bleed);
+    border: 0.2mm dashed rgba(125, 196, 228, .5);
+    pointer-events: none;
+  }
+}
+
+@media print {
+  .card { break-inside: avoid; }
+}
+
+/* Формат страницы под визитку намеренно НЕ объявлен здесь: @page глобален,
+   и `size: 96mm 56mm` из общей таблицы сломал бы печать резюме на A4.
+   Макет визитки верстается отдельным документом, который объявляет у себя:
+
+     @page { size: 96mm 56mm; margin: 0; }
+
+   Так же поступает любой другой нестандартный формат — бейдж, наклейка,
+   баннер. Общий слой печати остаётся на A4. */

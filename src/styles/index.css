@@ -1,0 +1,21 @@
+/* mishka-ds · полная таблица стилей дизайн-системы.
+   Порядок обязателен: токены → темы → совместимость → шрифты → база →
+   компоненты → подсветка → слайды → печать.
+
+   Частичные входы для тех, кому не нужно всё:
+     tokens.css     — только переменные, самодостаточен
+     print.css      — бумага: лист A4, визитка, @media print
+     slides.css     — слайды: холст 16:9 и типовые лейауты
+     code.css       — подсветка синтаксиса: классы highlight.js → токены --syn-*
+     compat.css     — старые имена токенов трёх проектов (удаляется после миграции)
+*/
+
+@import "./tokens.css";
+@import "./themes-scoped.css";
+@import "./compat.css";
+@import "./fonts.css";
+@import "./base.css";
+@import "./components.css";
+@import "./code.css";
+@import "./slides.css";
+@import "./print.css";
