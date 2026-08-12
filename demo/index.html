@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>mishka-ds — витрина компонентов</title>
+    <!-- Именно dist, а не src: относительные пути к шрифтам (../fonts/) сходятся
+         только рядом со шрифтами, а те копируются в dist на сборке. -->
+    <link rel="stylesheet" href="../dist/styles/index.css" />
+    <style>
+      /* Стили только самой витрины — в дизайн-систему они не входят. */
+      body { background: #6c6f85; }
+      .split { display: grid; grid-template-columns: 1fr; }
+      @media (min-width: 1100px) { .split { grid-template-columns: 1fr 1fr; } }
+      .showcase { min-height: 100vh; padding-block: var(--gap-lg); }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="./demo.js"></script>
+  </body>
+</html>
