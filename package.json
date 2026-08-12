@@ -1,0 +1,79 @@
+{
+  "name": "@jtprogru/mishka-ds",
+  "version": "0.1.0",
+  "description": "Дизайн-система «Мишка на сервере»: единые токены, шрифты, знак и компоненты для блога, резюме, презентаций, схем и печати",
+  "license": "MIT",
+  "author": "Mikhail Savin",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./dist/styles/index.css",
+    "./tokens.css": "./dist/styles/tokens.css",
+    "./tokens.json": "./tokens/tokens.json",
+    "./styles/*": "./dist/styles/*",
+    "./unocss": {
+      "import": "./dist/unocss/index.js"
+    },
+    "./print.css": "./dist/styles/print.css",
+    "./brand/*": "./dist/brand/*",
+    "./mermaid/*": "./dist/mermaid/*"
+  },
+  "files": [
+    "dist",
+    "tokens",
+    "fonts",
+    "brand",
+    "skills",
+    "README.md",
+    "BRAND.md",
+    "MIGRATION.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "tokens": "node scripts/gen-tokens-json.mjs",
+    "typecheck": "tsc --noEmit",
+    "demo": "node scripts/build.mjs && node --run serve",
+    "serve": "node scripts/serve.mjs",
+    "contrast": "node scripts/check-contrast.mjs"
+  },
+  "peerDependencies": {
+    "highlight.js": ">=11",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@fontsource/iosevka": "^5.3.0",
+    "@fontsource/onest": "^5.3.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "esbuild": "^0.25.0",
+    "highlight.js": "^11.12.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.7.0"
+  },
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "catppuccin",
+    "hugo",
+    "astro",
+    "slidev",
+    "brand"
+  ],
+  "peerDependenciesMeta": {
+    "highlight.js": {
+      "optional": true
+    }
+  }
+}
