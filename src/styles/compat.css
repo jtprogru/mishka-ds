@@ -1,0 +1,172 @@
+/* СГЕНЕРИРОВАНО scripts/gen-compat.mjs. Руками не править.
+
+   Старые имена токенов hugo-mishka, savinmi.ru и slidev-theme-bear. Файл
+   ничего не объявляет сам — только ссылается на канонические имена из
+   tokens.css, поэтому проект может переехать на новые имена когда ему
+   удобно, а не в день изменения токенов.
+
+   Блок повторён для каждого селектора темы намеренно: var() подставляется
+   в момент объявления, и алиас, объявленный только на :root, застрял бы в
+   светлых значениях внутри тёмного поддерева. */
+
+:root,
+:root[data-theme="light"] {
+  --bg-elevated: var(--bg-elev);
+  --text: var(--fg);
+  --text-muted: var(--fg-muted);
+  --text-subtle: var(--fg-subtle);
+  --code-text: var(--code-fg);
+  --info: var(--c-note);
+  --success: var(--c-tip);
+  --warning: var(--c-warn);
+  --danger: var(--c-danger);
+  --rule: var(--border);
+  --link: var(--accent);
+  --link-hover: var(--accent-hover);
+  --primary: var(--accent);
+  --callout-note: var(--c-note);
+  --callout-tip: var(--c-tip);
+  --callout-important: var(--c-important);
+  --callout-warn: var(--c-warn);
+  --callout-danger: var(--c-danger);
+  --header-bg: var(--bg);
+  --slidev-theme-primary: var(--accent-400);
+  --slidev-code-background: var(--bg-elev);
+  --footer-bg: #1e2030;
+  --footer-fg: #cad3f5;
+}
+
+:root[data-theme="dark"] {
+  --bg-elevated: var(--bg-elev);
+  --text: var(--fg);
+  --text-muted: var(--fg-muted);
+  --text-subtle: var(--fg-subtle);
+  --code-text: var(--code-fg);
+  --info: var(--c-note);
+  --success: var(--c-tip);
+  --warning: var(--c-warn);
+  --danger: var(--c-danger);
+  --rule: var(--border);
+  --link: var(--accent);
+  --link-hover: var(--accent-hover);
+  --primary: var(--accent);
+  --callout-note: var(--c-note);
+  --callout-tip: var(--c-tip);
+  --callout-important: var(--c-important);
+  --callout-warn: var(--c-warn);
+  --callout-danger: var(--c-danger);
+  --header-bg: var(--bg);
+  --slidev-theme-primary: var(--accent-400);
+  --slidev-code-background: var(--bg-elev);
+  --footer-bg: var(--bg-sunken);
+  --footer-fg: var(--fg);
+}
+
+[data-theme="light"]:not(:root) {
+  --bg-elevated: var(--bg-elev);
+  --text: var(--fg);
+  --text-muted: var(--fg-muted);
+  --text-subtle: var(--fg-subtle);
+  --code-text: var(--code-fg);
+  --info: var(--c-note);
+  --success: var(--c-tip);
+  --warning: var(--c-warn);
+  --danger: var(--c-danger);
+  --rule: var(--border);
+  --link: var(--accent);
+  --link-hover: var(--accent-hover);
+  --primary: var(--accent);
+  --callout-note: var(--c-note);
+  --callout-tip: var(--c-tip);
+  --callout-important: var(--c-important);
+  --callout-warn: var(--c-warn);
+  --callout-danger: var(--c-danger);
+  --header-bg: var(--bg);
+  --slidev-theme-primary: var(--accent-400);
+  --slidev-code-background: var(--bg-elev);
+  --footer-bg: #1e2030;
+  --footer-fg: #cad3f5;
+}
+
+[data-theme="dark"]:not(:root) {
+  --bg-elevated: var(--bg-elev);
+  --text: var(--fg);
+  --text-muted: var(--fg-muted);
+  --text-subtle: var(--fg-subtle);
+  --code-text: var(--code-fg);
+  --info: var(--c-note);
+  --success: var(--c-tip);
+  --warning: var(--c-warn);
+  --danger: var(--c-danger);
+  --rule: var(--border);
+  --link: var(--accent);
+  --link-hover: var(--accent-hover);
+  --primary: var(--accent);
+  --callout-note: var(--c-note);
+  --callout-tip: var(--c-tip);
+  --callout-important: var(--c-important);
+  --callout-warn: var(--c-warn);
+  --callout-danger: var(--c-danger);
+  --header-bg: var(--bg);
+  --slidev-theme-primary: var(--accent-400);
+  --slidev-code-background: var(--bg-elev);
+  --footer-bg: var(--bg-sunken);
+  --footer-fg: var(--fg);
+}
+
+html.light, .theme-light {
+  --bg-elevated: var(--bg-elev);
+  --text: var(--fg);
+  --text-muted: var(--fg-muted);
+  --text-subtle: var(--fg-subtle);
+  --code-text: var(--code-fg);
+  --info: var(--c-note);
+  --success: var(--c-tip);
+  --warning: var(--c-warn);
+  --danger: var(--c-danger);
+  --rule: var(--border);
+  --link: var(--accent);
+  --link-hover: var(--accent-hover);
+  --primary: var(--accent);
+  --callout-note: var(--c-note);
+  --callout-tip: var(--c-tip);
+  --callout-important: var(--c-important);
+  --callout-warn: var(--c-warn);
+  --callout-danger: var(--c-danger);
+  --header-bg: var(--bg);
+  --slidev-theme-primary: var(--accent-400);
+  --slidev-code-background: var(--bg-elev);
+  --footer-bg: #1e2030;
+  --footer-fg: #cad3f5;
+}
+
+html.dark, .theme-dark {
+  --bg-elevated: var(--bg-elev);
+  --text: var(--fg);
+  --text-muted: var(--fg-muted);
+  --text-subtle: var(--fg-subtle);
+  --code-text: var(--code-fg);
+  --info: var(--c-note);
+  --success: var(--c-tip);
+  --warning: var(--c-warn);
+  --danger: var(--c-danger);
+  --rule: var(--border);
+  --link: var(--accent);
+  --link-hover: var(--accent-hover);
+  --primary: var(--accent);
+  --callout-note: var(--c-note);
+  --callout-tip: var(--c-tip);
+  --callout-important: var(--c-important);
+  --callout-warn: var(--c-warn);
+  --callout-danger: var(--c-danger);
+  --header-bg: var(--bg);
+  --slidev-theme-primary: var(--accent-400);
+  --slidev-code-background: var(--bg-elev);
+  --footer-bg: var(--bg-sunken);
+  --footer-fg: var(--fg);
+}
+
+:root {
+  --font-text: var(--font-sans);
+  --font-code: var(--font-mono);
+}

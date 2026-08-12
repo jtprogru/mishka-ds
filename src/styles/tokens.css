@@ -1,0 +1,346 @@
+/* ============================================================================
+   mishka-ds · tokens.css — единственный источник правды бренда «Мишка на сервере».
+
+   Потребители: hugo-mishka (блог jtprog.ru), savinmi.ru (резюме),
+   slidev-theme-bear (презентации), React-компоненты этого пакета, генераторы
+   схем и печати. Ни один из них не объявляет цвет у себя.
+
+   Слои файла:
+     1. Роли цвета — light (catppuccin Latte) и dark (catppuccin Macchiato)
+     2. Повышенный контраст — prefers-contrast: more
+     3. Шкалы — типографика, ритм, радиусы, движение
+     4. Печать — миллиметры и пункты, единственное место с физическими единицами
+
+   Имена ролей совпадают с BRANDING.md (--fg, --bg-elev, --border). Старые имена
+   трёх проектов (--text, --bg-elevated, --rule, --callout-note …) продолжают
+   работать через compat.css — его можно выключить, когда все переедут.
+
+   Основание значений — BRANDING.md §2 (цвет), §3 (типографика), §8 (доступность).
+   Контрасты проверяются на сборке: npm run contrast.
+   ============================================================================ */
+
+/* ─────────────────────── 1. Роли цвета · light (Latte) ─────────────────── */
+
+:root,
+:root[data-theme="light"] {
+  /* Поверхности */
+  --bg:        #eff1f5;  /* base — фон страницы */
+  --bg-elev:   #e6e9ef;  /* mantle — карточки, подложки callout, код */
+  --bg-sunken: #dce0e8;  /* crust — утопленные блоки, пилюли, подвал */
+
+  /* Текст. muted/subtle затемнены до AA ≥ 4.5:1 на --bg: catppuccin subtext0
+     #6c6f85 даёт 4.37, overlay2 #8c8fa1 — 2.83. Обе ступени валили контраст
+     в шапке, подписи и футере, поэтому сдвинуты внутри той же палитры. */
+  --fg:        #4c4f69;  /* text — 7.06:1 */
+  --fg-muted:  #5c5f77;  /* subtext1 — 5.53:1 */
+  --fg-subtle: #64677d;  /* затемнённый subtext0 — 4.92:1 */
+
+  /* Акцентная шкала — Sapphire. Один холодный тон, четыре роли (BRANDING §2).
+     700 — единственный, которым можно набирать текст на светлом фоне. */
+  --accent-300: #7dc4e4;  /* Macchiato Sapphire — текст-ссылка на тёмной теме */
+  --accent-400: #209fb5;  /* Latte Sapphire — декор: полоски, бордеры, иконки */
+  --accent-600: #1c8a9d;  /* крупный текст на светлом — 3.59:1 на base, 3.34 на mantle.
+                             Latte Sapphire #209fb5 давал 2.78 и AA large НЕ проходил:
+                             BRANDING §2 помечал его «на грани», замер показал, что
+                             грань уже перейдена. Затемнён по тому же принципу, что и 700. */
+  --accent-700: #0b7285;  /* текст-ссылка на светлом, AA; PWA theme-color */
+
+  --accent:       var(--accent-700);
+  --accent-hover: #095e6d;  /* темнее базы: это тоже текст, AA обязателен */
+  --accent-soft:  #bcdff0;  /* тихая заливка: выделение, badge, подложка note */
+
+  /* Границы */
+  --border:        #ccd0da;  /* surface0 */
+  --border-strong: #bcc0cc;  /* surface1 */
+
+  /* Код. Фон выровнен с --bg-elev: catppuccin-latte приносит свой base, и
+     несовпадение читается не как «другой слой», а как сбой оттенка. */
+  --code-bg:        #e6e9ef;
+  --code-fg:        #4c4f69;
+  --code-inline-bg: #dce0e8;
+
+  /* Семантика callouts. --c-* — полоска и тинт подложки, --c-*-text — заголовок
+     и иконка. Разделение нужно потому, что яркие тона Latte контраст для текста
+     не держат: на подложке mantle они уходят ниже AA. */
+  --c-note:      #7287fd;  /* Lavender — намеренно не Blue: Blue сливается с Sapphire */
+  --c-tip:       #40a02b;  /* Green */
+  --c-important: #8839ef;  /* Mauve */
+  --c-warn:      #fe640b;  /* Peach — тёплый тон остался в системе, но служебным */
+  --c-danger:    #d20f39;  /* Red */
+
+  --c-note-text:      #3d47c9;  /* 5.86:1 на mantle */
+  --c-tip-text:       #2e7320;  /* 4.81:1 */
+  --c-important-text: #7a30d6;  /* 5.36:1 */
+  --c-warn-text:      #9a3f0a;  /* 5.58:1 */
+  --c-danger-text:    #bd0d33;  /* 5.28:1 */
+
+  /* Категориальная палитра для графиков и схем.
+
+     Порядок посчитан перебором всех 40320 перестановок: он максимизирует
+     минимальное яркостное расстояние между соседними сериями сразу в обеих
+     темах. Достижимый максимум — 1.15:1, и это потолок самой палитры:
+     акцентные тона catppuccin лежат в узкой полосе яркости, развести восемь
+     серий сильнее внутри неё нельзя. Отсюда жёсткое правило: в графике цвет
+     всегда дублируется вторым различителем — подписью у линии, формой
+     маркера или штриховкой (BRANDING §8).
+
+     Больше восьми серий — это не график, а таблица. Если серии несут смысл
+     «хорошо / плохо», брать не chart-N, а семантические --c-tip / --c-danger:
+     красная линия в категориальном ряду читается как авария, даже когда
+     означает просто «вторая».
+
+     Хрома выровнена по полосе. Latte отдаёт свои акценты в полную силу, и
+     Red, Green, Mauve и Peach выбивались из ряда: на светлом фоне они резали
+     глаз рядом с приглушёнными Sapphire, Lavender, Yellow и Teal. Четыре
+     громких сведены к средней хроме остальных в OKLCH — тон сохранён, упала
+     только насыщенность. В тёмной теме такого не было: Macchiato пастельный
+     сам по себе, там значения остались как есть. */
+  --chart-1: #209fb5;  /* Sapphire */
+  --chart-2: #c35c60;  /* Red, приглушён */
+  --chart-3: #589b4b;  /* Green, приглушён */
+  --chart-4: #8a6ec6;  /* Mauve, приглушён */
+  --chart-5: #7287fd;  /* Lavender */
+  --chart-6: #df8e1d;  /* Yellow */
+  --chart-7: #179299;  /* Teal */
+  --chart-8: #df7e56;  /* Peach, приглушён */
+
+  /* Синтаксис. Роли catppuccin, затемнённые до AA (4.5:1) на подложке кода.
+     Блог красит код через Chroma со стилем catppuccin-latte — там значения
+     сырые и часть ролей ниже порога. Здесь порог держится: контраст в системе
+     инвариант (BRAND.md §1), а не рекомендация. */
+  --syn-keyword:  #8738ee;  /* Mauve */
+  --syn-string:   #0e7a00;  /* Green */
+  --syn-number:   #c72d00;  /* Peach */
+  --syn-constant: #c72d00;  /* Peach */
+  --syn-comment:  #656879;  /* Overlay1 */
+  --syn-function: #155dec;  /* Blue */
+  --syn-type:     #a15500;  /* Yellow */
+  --syn-variable: #4c4f69;  /* Text */
+  --syn-operator: #006eab;  /* Sky */
+  --syn-meta:     #00757c;  /* Teal */
+
+  /* Тени */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, .06);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, .08);
+}
+
+/* ─────────────────────── 1. Роли цвета · dark (Macchiato) ──────────────── */
+
+:root[data-theme="dark"] {
+  --bg:        #24273a;
+  --bg-elev:   #1e2030;
+  --bg-sunken: #181926;
+
+  --fg:        #cad3f5;  /* 9.91:1 */
+  --fg-muted:  #a5adcb;  /* 6.62:1 */
+  --fg-subtle: #939ab7;  /* overlay2 — 5.29:1. Было overlay1 #8087a2 (4.14) — единственная
+                            пара системы, которая никогда не проверялась и валила AA */
+
+  /* Шкала та же, роли меняются местами: на тёмном текстом работает светлая
+     ступень, а тёмная уходит в декор. */
+  --accent-300: #7dc4e4;
+  --accent-400: #7dc4e4;
+  --accent-600: #209fb5;
+  --accent-700: #0b7285;
+
+  --accent:       var(--accent-300);
+  --accent-hover: #96ccdd;
+  --accent-soft:  #2d4f5c;
+
+  --border:        #363a4f;
+  --border-strong: #494d64;
+
+  --code-bg:        #1e2030;
+  --code-fg:        #cad3f5;
+  --code-inline-bg: #181926;
+
+  --c-note:      #b7bdf8;
+  --c-tip:       #a6da95;
+  --c-important: #c6a0f6;
+  --c-warn:      #f5a97f;
+  --c-danger:    #ed8796;
+
+  /* На тёмной теме тона проходят AA как текст — затемнённая ступень не нужна. */
+  --c-note-text:      #b7bdf8;
+  --c-tip-text:       #a6da95;
+  --c-important-text: #c6a0f6;
+  --c-warn-text:      #f5a97f;
+  --c-danger-text:    #ed8796;
+
+  --chart-1: #7dc4e4;
+  --chart-2: #ed8796;
+  --chart-3: #a6da95;
+  --chart-4: #c6a0f6;
+  --chart-5: #b7bdf8;
+  --chart-6: #eed49f;
+  --chart-7: #8bd5ca;
+  --chart-8: #f5a97f;
+
+  /* Macchiato пастельный сам по себе — все роли проходят AA без правок. */
+  --syn-keyword:  #c6a0f6;  /* Mauve */
+  --syn-string:   #a6da95;  /* Green */
+  --syn-number:   #f5a97f;  /* Peach */
+  --syn-constant: #f5a97f;  /* Peach */
+  --syn-comment:  #8087a2;  /* Overlay1 */
+  --syn-function: #8aadf4;  /* Blue */
+  --syn-type:     #eed49f;  /* Yellow */
+  --syn-variable: #cad3f5;  /* Text */
+  --syn-operator: #91d7e3;  /* Sky */
+  --syn-meta:     #8bd5ca;  /* Teal */
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .25);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, .35);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, .45);
+}
+
+/* ─────────────────────── 2. prefers-contrast: more ─────────────────────── */
+/* Срабатывает автоматически при системной настройке повышенной контрастности.
+   Усиливает контраст, делает границы заметнее, убирает полупрозрачность. */
+
+@media (prefers-contrast: more) {
+  :root,
+  :root[data-theme="light"] {
+    --bg:        #ffffff;
+    --bg-elev:   #ffffff;
+    --bg-sunken: #f0f0f0;
+
+    --fg:        #000000;
+    --fg-muted:  #1a1a1a;
+    --fg-subtle: #404040;
+
+    --accent-300: #4bb3cc;
+    --accent-400: #0b7285;
+    --accent-600: #065666;
+    --accent-700: #043b47;
+    --accent:       #065666;
+    --accent-hover: #043b47;
+    --accent-soft:  #bcdff0;
+
+    --border:        #999999;
+    --border-strong: #444444;
+
+    --code-bg:        #000000;
+    --code-fg:        #ffffff;
+    --code-inline-bg: #e8e8e8;
+  }
+
+  :root[data-theme="dark"] {
+    --bg:        #000000;
+    --bg-elev:   #000000;
+    --bg-sunken: #1a1a1a;
+
+    --fg:        #ffffff;
+    --fg-muted:  #e6e6e6;
+    --fg-subtle: #bfbfbf;
+
+    --accent-300: #a6d8ea;
+    --accent-400: #7dc4e4;
+    --accent-600: #209fb5;
+    --accent-700: #0b7285;
+    --accent:       #a6d8ea;
+    --accent-hover: #cbe8f3;
+    --accent-soft:  #2d4f5c;
+
+    --border:        #808080;
+    --border-strong: #cccccc;
+
+    --code-bg:        #000000;
+    --code-fg:        #ffffff;
+    --code-inline-bg: #1a1a1a;
+  }
+}
+
+/* ─────────────────────── 3. Шкалы ──────────────────────────────────────── */
+
+:root {
+  /* Шрифты. Onest — нейтральный гротеск с чистой кириллицей (BRANDING §3).
+     Iosevka — код и
+     технические метки. Проза моноширинным не набирается никогда. */
+  --font-sans:  "Onest", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-mono:  "Iosevka", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Размеры — Major Third 1.250. Девять ступеней обслуживают экран,
+     display-ступени существуют только для проекции: на слайде с последнего ряда
+     зала заголовок меньше 3.75rem не читается. В вёрстке страницы их не применять. */
+  --fs-xs:   0.75rem;
+  --fs-sm:   0.875rem;
+  --fs-base: 1rem;
+  --fs-md:   1.125rem;
+  --fs-lg:   1.25rem;
+  --fs-xl:   1.5rem;
+  --fs-2xl:  1.875rem;
+  --fs-3xl:  2.25rem;
+  --fs-4xl:  3rem;
+
+  --fs-display-sm: 3.75rem;  /* обложка, раздел, statement */
+  --fs-display-md: 4.5rem;
+  --fs-display-lg: 6rem;     /* одна цифра на весь слайд */
+
+  /* Межстрочный */
+  --lh-tight: 1.2;
+  --lh-snug:  1.4;
+  --lh-base:  1.65;
+  --lh-loose: 1.8;
+
+  /* Отступы */
+  --gap-xs:  0.25rem;
+  --gap-sm:  0.5rem;
+  --gap-md:  1rem;
+  --gap-lg:  1.5rem;
+  --gap-xl:  2.5rem;
+  --gap-2xl: 4rem;
+
+  --page-pad-block: var(--gap-xl);
+  --section-gap:    var(--gap-2xl);
+
+  /* Радиусы */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-pill: 999px;
+
+  /* Контейнеры. 720px — ширина колонки для длинного текста; менять её значит
+     менять читаемость, а не «подгонять макет». */
+  --content-width:   720px;
+  --container-width: 1200px;
+  --header-height:   64px;
+
+  --page-title-size: var(--fs-3xl);
+
+  /* Движение */
+  --transition:      0.18s ease;
+  --transition-slow: 0.36s ease;
+}
+
+@media (min-width: 768px) {
+  :root { --page-title-size: var(--fs-4xl); }
+}
+
+/* ─────────────────────── 4. Печать ─────────────────────────────────────── */
+/* Единственное место системы с физическими единицами. Экранные rem на бумаге
+   не значат ничего: кегль задаётся в пунктах, поля и форматы — в миллиметрах. */
+
+:root {
+  /* Резюме и документы — A4 */
+  --print-page-width:  210mm;
+  --print-page-height: 297mm;
+  --print-margin:      18mm;
+
+  /* Визитка — 90×50 мм, российский стандарт. Вылеты 3 мм с каждой стороны,
+     безопасное поле 4 мм: ближе к краю текст режется на подрезке. */
+  --card-width:  90mm;
+  --card-height: 50mm;
+  --card-bleed:  3mm;
+  --card-safe:   4mm;
+
+  /* Кегли для бумаги. 10.5pt — тело; ниже 8pt не опускаться: мелкий кегль
+     съедается растром офсетной печати. */
+  --print-fs-xs:    8pt;
+  --print-fs-sm:    9pt;
+  --print-fs-base:  10.5pt;
+  --print-fs-lg:    13pt;
+  --print-fs-title: 18pt;
+  --print-lh-base:  1.45;
+}
