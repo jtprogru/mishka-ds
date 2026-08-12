@@ -1,0 +1,107 @@
+/* mishka-ds · подсветка синтаксиса.
+
+   Классы highlight.js (v11) → токены --syn-*. Значения живут в tokens.css и
+   проверяются на AA скриптом контраста, здесь только раскладка ролей.
+
+   Зачем отдельный слой: подсветка нужна не всем потребителям. Кто красит код
+   сам (блог через Chroma, слайды через Shiki), подключает всё остальное и
+   пропускает этот файл. Кто рендерит CodeBlock в React — подключает.
+
+   Ролей меньше, чем классов у highlight.js, и это намеренно: восемь различимых
+   цветов на подложке кода — предел, дальше подсветка мешает чтению, а не
+   помогает. Близкие по смыслу классы делят один токен. */
+
+.hljs {
+  color: var(--code-fg);
+  background: transparent;
+}
+
+/* Ключевые слова и всё, что управляет потоком. */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-doctag,
+.hljs-name,
+.hljs-strong {
+  color: var(--syn-keyword);
+}
+
+/* Строки и всё строкоподобное. */
+.hljs-string,
+.hljs-regexp,
+.hljs-char.escape_,
+.hljs-addition,
+.hljs-quote,
+.hljs-template-variable,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: var(--syn-string);
+}
+
+/* Числа, константы, литералы. */
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-variable.constant_,
+.hljs-link {
+  color: var(--syn-constant);
+}
+
+/* Комментарии — приглушены и курсивом: два различителя, а не один цвет. */
+.hljs-comment {
+  color: var(--syn-comment);
+  font-style: italic;
+}
+
+/* Имена функций и вызовы. */
+.hljs-title,
+.hljs-title.function_,
+.hljs-built_in {
+  color: var(--syn-function);
+}
+
+/* Типы, классы, атрибуты — то, что описывает форму данных. */
+.hljs-type,
+.hljs-title.class_,
+.hljs-attr,
+.hljs-attribute,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: var(--syn-type);
+}
+
+/* Переменные, свойства, параметры — цвет обычного текста кода. */
+.hljs-variable,
+.hljs-property,
+.hljs-params,
+.hljs-subst,
+.hljs-template-tag {
+  color: var(--syn-variable);
+}
+
+/* Операторы и пунктуация. */
+.hljs-operator,
+.hljs-punctuation {
+  color: var(--syn-operator);
+}
+
+/* Метаданные: шебанг, директивы препроцессора, аннотации. */
+.hljs-meta,
+.hljs-meta .hljs-keyword,
+.hljs-meta .hljs-string {
+  color: var(--syn-meta);
+}
+
+/* Диффы. Красный и зелёный здесь семантические, а не категориальные —
+   поэтому берутся из --c-danger / --c-tip, а не из палитры графиков. */
+.hljs-deletion {
+  color: var(--c-danger-text);
+}
+.hljs-addition {
+  color: var(--c-tip-text);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
