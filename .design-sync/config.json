@@ -1,0 +1,35 @@
+{
+  "pkg": "@jtprogru/mishka-ds",
+  "globalName": "MishkaDS",
+  "projectId": "0c6a4f9a-ae25-4a87-b3cf-907a341dabbe",
+  "shape": "package",
+  "buildCmd": "npm run build",
+  "srcDir": "src",
+  "tsconfig": "tsconfig.json",
+  "cssEntry": "dist/styles/mishka-ds.css",
+  "tokensGlob": "dist/styles/tokens.css",
+  "extraFonts": [
+    "dist/styles/fonts.css"
+  ],
+  "readmeHeader": ".design-sync/conventions.md",
+  "provider": {
+    "component": "ThemeProvider",
+    "props": {
+      "defaultTheme": "light"
+    }
+  },
+  "overrides": {
+    "BusinessCard": {
+      "cardMode": "column"
+    },
+    "Grid": {
+      "cardMode": "column"
+    },
+    "Sheet": {
+      "cardMode": "column"
+    },
+    "SiteHeader": {
+      "cardMode": "column"
+    }
+  }
+}
