@@ -47,7 +47,9 @@ React-слой собственных стилей не имеет. Компон
 
 ## Что нельзя править руками
 
-Перезапишется ближайшей сборкой: `src/styles/themes-scoped.css`, `src/styles/compat.css`, `src/components/markGeometry.ts`, `tokens/tokens.json`, `brand/mark.svg`, `brand/logo.svg`, `brand/mascot.svg`, знак внутри `brand/card.html`, всё в `dist/`, `demo/demo.js`.
+Перезапишется ближайшей сборкой: `src/styles/themes-scoped.css`, `src/styles/compat.css`, `src/components/markGeometry.ts`, `tokens/tokens.json`, `brand/mark.svg`, `brand/logo.svg`, `brand/mascot.svg`, знак внутри `brand/card.html`, `assets/cover.svg`, всё в `dist/`, `demo/demo.js`.
+
+Обложка `assets/cover.svg` собирается `scripts/gen-cover.mjs` из трёх входов: цвета из `tokens/tokens.json`, знак из `brand/mark.svg`, `@font-face` из `src/styles/fonts.css` с вшитыми в data: URI сабсетами Onest. Правится генератор, а не результат. Растр `assets/cover.png` не коммитится: он нужен только для загрузки соцпревью в настройках GitHub, `make cover` делает его через `rsvg-convert`, если тот есть.
 
 Знак редактируется в артворке `brand/mishka-mark-source.svg`, дальше `make mark`. Он одноцветный через инверсию в маску; порядок контуров в `MARK_PATHS` менять нельзя — детали морды рисуются поверх вырубки.
 

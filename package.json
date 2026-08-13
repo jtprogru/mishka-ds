@@ -4,6 +4,12 @@
   "description": "Дизайн-система «Мишка на сервере»: единые токены, шрифты, знак и компоненты для блога, резюме, презентаций, схем и печати",
   "license": "SEE LICENSE IN LICENSE",
   "author": "Mikhail Savin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jtprogru/mishka-ds.git"
+  },
+  "homepage": "https://github.com/jtprogru/mishka-ds#readme",
+  "bugs": "https://github.com/jtprogru/mishka-ds/issues",
   "type": "module",
   "sideEffects": [
     "*.css"

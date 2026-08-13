@@ -8,7 +8,7 @@ SHELL := /bin/bash
 NPM  := npm
 NODE := node
 
-.PHONY: help install build tokens mark fonts css contrast typecheck check demo serve pack clean distclean skills-link
+.PHONY: help install build tokens mark cover fonts css contrast typecheck check demo serve pack clean distclean skills-link
 
 help: ## Список команд
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -25,6 +25,14 @@ tokens: ## Пересобрать tokens/tokens.json из src/styles/tokens.css
 
 mark: ## Пересобрать знак из brand/mishka-mark-source.svg (markGeometry.ts, brand/*.svg, визитка)
 	$(NODE) scripts/gen-mark-geometry.mjs
+
+# PNG нужен только для соцпревью GitHub — в настройках репозитория загружается
+# растр, SVG там не принимают. README и всё остальное живут на векторе.
+cover: ## Пересобрать assets/cover.svg (обложка README и соцпревью)
+	$(NODE) scripts/gen-cover.mjs
+	@command -v rsvg-convert >/dev/null && rsvg-convert -w 1280 assets/cover.svg -o assets/cover.png \
+		&& echo "✓ assets/cover.png — растр для соцпревью GitHub" \
+		|| echo "· rsvg-convert не найден, PNG для соцпревью не собран (brew install librsvg)"
 
 # Ручной шаг: нарезка сабсетов требует pyftsubset из fonttools с поддержкой
 # woff2, а результат коммитится. Обычной сборке шрифты пересобирать незачем.

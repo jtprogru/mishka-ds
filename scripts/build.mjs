@@ -120,9 +120,13 @@ await build({ ...common, format: 'cjs', outfile: r('dist/index.cjs') });
 /* 7. Типы. */
 run(process.execPath, ['node_modules/typescript/bin/tsc', '--emitDeclarationOnly', '--outDir', 'dist']);
 
-/* 8. Производные от токенов: темы mermaid, пресет UnoCSS, проверка контрастов. */
+/* 8. Производные от токенов: темы mermaid, пресет UnoCSS, обложка репозитория,
+      проверка контрастов. Обложка здесь по той же причине, что и знак в шаге 0:
+      она показывает палитру в обеих темах, и нарисованная копия разъехалась бы
+      с токенами при первой правке цвета. */
 run(process.execPath, ['scripts/gen-mermaid-theme.mjs']);
 run(process.execPath, ['scripts/gen-unocss-preset.mjs']);
+run(process.execPath, ['scripts/gen-cover.mjs']);
 run(process.execPath, ['scripts/check-contrast.mjs']);
 
 /* 9. Демо-страница: React внутрь бандла, чтобы demo/index.html открывался

@@ -1,5 +1,20 @@
 # mishka-ds
 
+[![code: PolyForm NC 1.0](https://img.shields.io/badge/code-PolyForm%20NC%201.0-0b7285)](LICENSE)
+[![brand: all rights reserved](https://img.shields.io/badge/brand-all%20rights%20reserved-24273a)](LICENSE)
+[![docs: CC BY-NC-SA 4.0](https://img.shields.io/badge/docs-CC%20BY--NC--SA%204.0-7dc4e4?labelColor=1e2030)](LICENSE)
+[![fonts: SIL OFL 1.1](https://img.shields.io/badge/fonts-SIL%20OFL%201.1-179299)](fonts/)
+[![palette: catppuccin](https://img.shields.io/badge/palette-catppuccin-df8e1d)](BRAND.md)
+[![contrast: WCAG AA](https://img.shields.io/badge/contrast-WCAG%20AA-589b4b)](#проверка-контрастов)
+[![last commit](https://img.shields.io/github/last-commit/jtprogru/mishka-ds?color=8a6ec6)](https://github.com/jtprogru/mishka-ds/commits/main)
+[![stars](https://img.shields.io/github/stars/jtprogru/mishka-ds?color=209fb5)](https://github.com/jtprogru/mishka-ds/stargazers)
+
+<!-- markdownlint-disable MD033 -->
+<p align="center">
+  <img src="assets/cover.svg" alt="mishka-ds — дизайн-система «Мишка на сервере»: токены, шрифты, знак и компоненты для блога, резюме, слайдов, схем и печати" width="900">
+</p>
+<!-- markdownlint-enable MD033 -->
+
 Дизайн-система «Мишка на сервере». Один источник цвета, шрифтов, ритма и правил для всего, что выходит под этим именем: блога [jtprog.ru](https://jtprog.ru), резюме [savinmi.ru](https://savinmi.ru), презентаций на `slidev-theme-bear`, схем в постах и печатной продукции.
 
 Система не придумана заново — она собрана из четырёх репозиториев, где одно и то же жило четырьмя копиями. Одна и та же роль называлась `--text` в теме блога, `--fg` в слайдах и резюме, `--rule` вместо `--border` в третьем месте; шрифты подключались тремя разными способами; контрасты проверялись только в презентациях. Копии успели разойтись: конфиги mermaid в блоге остались в палитре, от которой бренд ушёл год назад.

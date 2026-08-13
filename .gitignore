@@ -1,6 +1,11 @@
 node_modules/
 dist/
 demo/demo.js
+
+# Растр обложки. Нужен ровно один раз и вручную — GitHub принимает в соцпревью
+# только PNG/JPG. README и всё остальное живут на assets/cover.svg, который
+# коммитится. Собирается вместе с ним: make cover.
+assets/cover.png
 .DS_Store
 *.log
 
