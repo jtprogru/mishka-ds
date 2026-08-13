@@ -169,7 +169,7 @@ ${GENERATED}
   <!--
     ЛОГОТИП = знак + словесный знак. Обе части наследуют currentColor.
 
-    Словесный знак набран Onest Bold — тем же шрифтом, что и заголовки во всех
+    Словесный знак набран IBM Plex Sans Bold — тем же шрифтом, что и заголовки во всех
     поверхностях. Отдельной шрифтовой пары под логотип нет и не нужно: единство
     держится на том, что логотип набран шрифтом бренда, а не нарисован отдельно.
 
@@ -180,7 +180,7 @@ ${GENERATED}
 ${maskBody('    ', `translate(0 ${(LOGO_H - markH) / 2}) scale(${scale.toFixed(6)})`)}
   </mask>
   <rect width="${LOGO_W}" height="${LOGO_H}" fill="currentColor" mask="url(#bear-logo)"/>
-  <text x="${textX}" y="42" font-family="'Onest', system-ui, sans-serif" font-size="28" font-weight="700" fill="currentColor">Мишка на сервере</text>
+  <text x="${textX}" y="42" font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="28" font-weight="700" fill="currentColor">Мишка на сервере</text>
 </svg>
 `,
 );

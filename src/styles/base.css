@@ -57,7 +57,7 @@ hr {
 
 /* ---------- 02-typography ---------- */
 /* Базовая типографика: заголовки, абзацы, инлайн-элементы.
-   Шрифт тела — Onest, подключён в fonts.css (см. BRANDING §3). */
+   Шрифт тела — IBM Plex Sans, подключён в fonts.css (см. BRANDING §3). */
 
 body {
   font-feature-settings: "ss01", "cv11";

@@ -86,7 +86,7 @@ import { ThemeProvider, Callout, CodeBlock } from '@jtprogru/mishka-ds';
 
 Токены разбираются в `tokens/tokens.json`, и из него выводится остальное: scoped-темы, пресет UnoCSS для Slidev, темы mermaid для светлой и тёмной схемы, вариант `fonts.css` с абсолютными путями. Руками эти файлы не править — перезапишутся на сборке.
 
-Шрифты собираются отдельным ручным шагом: `node scripts/gen-fonts.mjs` режет `@fontsource/onest` и `@fontsource/iosevka` на unicode-range сабсеты и пишет `fonts/` вместе с `fonts.css`. Нужен `pyftsubset`; результат коммитится, поэтому обычная сборка его не требует.
+Шрифты собираются отдельным ручным шагом: `node scripts/gen-fonts.mjs` режет `@fontsource/ibm-plex-sans` и `@fontsource/iosevka` на unicode-range сабсеты и пишет `fonts/` вместе с `fonts.css`. Нарезаются оба начертания: прямое в 400 и 700, курсив у основного шрифта в 400 и 700, у моноширинного в 400. Нужен `pyftsubset`; результат коммитится, поэтому обычная сборка его не требует.
 
 По той же схеме собирается знак. Источник — артворк `brand/mishka-mark-source.svg`, из него `scripts/gen-mark-geometry.mjs` делает `src/components/markGeometry.ts`, а из геометрии — `brand/mark.svg`, `brand/logo.svg`, `brand/mascot.svg` и знак внутри `brand/card.html`. Менять надо артворк, а не производные.
 
@@ -121,6 +121,6 @@ import { ThemeProvider, Callout, CodeBlock } from '@jtprogru/mishka-ds';
 
 Бренд — нет. Знак, маскот, фавиконы, макет визитки, геометрия в `markGeometry.ts`, `BRAND.md` и само имя «Мишка на сервере» остаются моими: всё это в разделе 2 лицензии, все права защищены. Форкать код можно, медведя в форке надо заменить на своего.
 
-Шрифты в `fonts/` чужие: сабсеты Iosevka и Onest под SIL OFL 1.1, тексты лицензий лежат рядом с файлами.
+Шрифты в `fonts/` чужие: сабсеты Iosevka и IBM Plex Sans под SIL OFL 1.1, тексты лицензий лежат рядом с файлами.
 
 Вопросы по коммерческой лицензии или разрешению на бренд — jtprogru@gmail.com, [@jtprogru](https://t.me/jtprogru).

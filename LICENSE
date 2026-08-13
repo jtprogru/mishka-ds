@@ -40,9 +40,9 @@ Copyright © 2026 Михаил Савин (Mikhail Savin), https://jtprog.ru
 Файлы в `fonts/` — сабсеты чужих гарнитур, не мои. Права принадлежат их авторам, условия — OFL 1.1, тексты лежат рядом:
 
 - Iosevka, © Renzhi Li (aka. Belleve Invis) — [`fonts/LICENSE-iosevka.txt`](fonts/LICENSE-iosevka.txt);
-- Onest, © The Onest Project Authors — [`fonts/LICENSE-onest.txt`](fonts/LICENSE-onest.txt).
+- IBM Plex Sans, © IBM Corp. — [`fonts/LICENSE-ibm-plex-sans.txt`](fonts/LICENSE-ibm-plex-sans.txt).
 
-`.woff2` в `fonts/` получены нарезкой на unicode-range из пакетов `@fontsource/iosevka` и `@fontsource/onest` скриптом `scripts/gen-fonts.mjs`, то есть это модифицированные версии. Имена гарнитур сохранены, разделы 1–3 на них не распространяются: OFL 1.1 остаётся OFL 1.1 при любом дальнейшем распространении.
+`.woff2` в `fonts/` получены нарезкой на unicode-range из пакетов `@fontsource/iosevka` и `@fontsource/ibm-plex-sans` скриптом `scripts/gen-fonts.mjs`, то есть это модифицированные версии. Имена гарнитур сохранены, разделы 1–3 на них не распространяются: OFL 1.1 остаётся OFL 1.1 при любом дальнейшем распространении.
 
 ## Как получить разрешение
 

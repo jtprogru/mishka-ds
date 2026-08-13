@@ -15,7 +15,7 @@ description: Собирает доклад целиком — от темы ил
 
 - утилиты берутся из `slidev-theme-bear/uno.config.ts`, а не из пресета пакета. Работают `bg-elev`, `bg-paper`, `text-ink`, `text-muted`, `border-hair`, `text-accent-300/400/600/700`, `text-link` и цвета callout'ов (`note`, `tip`, `important`, `warn`, `danger`);
 - `text-chart-1…8`, `text-subtle`, `bg-sunken`, `border-hair-strong` и `text-display-accent` в теме пока **нет** — они приезжают вместе с миграцией. До неё для графиков и цифр брать переменные напрямую: `style="color: var(--chart-3)"`;
-- шрифты в теме свои — PT Sans и JetBrains Mono, не Onest и Iosevka пакета. На вёрстку слайда это не влияет, на скриншот в посте — влияет;
+- шрифты в теме свои — PT Sans и JetBrains Mono, не IBM Plex Sans и Iosevka пакета. На вёрстку слайда это не влияет, на скриншот в посте — влияет;
 - контрасты темы проверяет её собственный `npm run contrast`. Общая проверка пакета (`make contrast`) покрывает токены, а не слайды, — пока это две разные команды.
 
 Если миграция уже прошла (в `package.json` темы появился `@jtprogru/mishka-ds`, а `styles/vars.css` исчез) — этот раздел устарел, обнови его вместе с дальнейшими правками.

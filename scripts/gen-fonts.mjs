@@ -6,8 +6,8 @@
    Нужен pyftsubset из fonttools с поддержкой woff2:
      pipx install fonttools && pipx inject fonttools brotli
 
-   Зачем вообще резать. @fontsource/onest уже разложен по unicode-range, его
-   файлы просто копируются. А @fontsource/iosevka отдаёт один файл на 964 КБ,
+   Зачем вообще резать. @fontsource/ibm-plex-sans уже разложен по unicode-range,
+   его файлы просто копируются. А @fontsource/iosevka отдаёт один файл на 964 КБ,
    помеченный как «latin», внутри которого вся гарнитура целиком — 5706
    кодпоинтов вместе с кириллицей и греческим. Отдать такое читателю ради
    моноширинного кода нельзя, поэтому он режется на те же четыре сабсета.
@@ -22,7 +22,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const r = (...p) => resolve(root, ...p);
 
 /* Диапазоны — те же, что раздаёт Google Fonts. Менять их без нужды нельзя:
-   по ним же нарезан Onest, и расхождение даст дырки в подстановке. */
+   по ним же нарезан основной шрифт, и расхождение даст дырки в подстановке. */
 const RANGES = {
   latin:
     'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD',
@@ -39,20 +39,34 @@ const MONO_EXTRA = 'U+2500-257F, U+2580-259F, U+25A0-25FF, U+2630-2637, U+2190-2
 
 const FAMILIES = [
   {
-    family: 'Onest',
-    dir: 'onest',
-    pkg: '@fontsource/onest',
-    weights: [400, 700],
+    family: 'IBM Plex Sans',
+    dir: 'ibm-plex-sans',
+    pkg: '@fontsource/ibm-plex-sans',
+    /* Курсив нужен обоих весов: em в прозе идёт нормальным, но попадает и
+       внутрь заголовков и strong. Без 700i браузер синтезировал бы полужирный
+       из 400i — ровно та беда, из-за которой ушли с Onest, у которого
+       курсивного начертания нет вообще. */
+    variants: [
+      { style: 'normal', weights: [400, 700] },
+      { style: 'italic', weights: [400, 700] },
+    ],
     presubset: true, // уже разложен по сабсетам — только копируем
-    note: 'Основной текст. Нейтральный гротеск с чистой кириллицей.',
+    note: 'Основной текст. Нейтральный гротеск с кириллицей и настоящим курсивом.',
   },
   {
     family: 'Iosevka',
     dir: 'iosevka',
     pkg: '@fontsource/iosevka',
-    weights: [400, 700],
+    /* Курсив только в 400: моноширинным курсивом набраны комментарии в коде и
+       .hljs-emphasis, оба нормального веса. Полужирный курсив в подсветке не
+       встречается, а стоит он ещё 50 КБ в репозитории. Понадобится — сюда
+       добавляется 700, файлы в пакете есть. */
+    variants: [
+      { style: 'normal', weights: [400, 700] },
+      { style: 'italic', weights: [400] },
+    ],
     presubset: false, // один файл на всю гарнитуру — режем сами
-    source: (w) => `files/iosevka-latin-${w}-normal.woff2`,
+    source: (w, style) => `files/iosevka-latin-${w}-${style}.woff2`,
     extra: MONO_EXTRA,
     /* latin-ext коду не нужен: это фонетические расширения и латинская
        дополнительная — в блоке кода они не встречаются, а весят у Iosevka
@@ -77,13 +91,15 @@ for (const f of FAMILIES) {
   rmSync(resolve(outDir, f.dir), { recursive: true, force: true });
   mkdirSync(resolve(outDir, f.dir), { recursive: true });
 
-  for (const weight of f.weights) {
+  const cuts = f.variants.flatMap(({ style, weights }) => weights.map((weight) => ({ style, weight })));
+
+  for (const { style, weight } of cuts) {
     for (const subset of f.only ?? allSubsets) {
-      const outName = `${f.dir}-${weight}n-${subset}.woff2`;
+      const outName = `${f.dir}-${weight}${style === 'italic' ? 'i' : 'n'}-${subset}.woff2`;
       const outPath = resolve(outDir, f.dir, outName);
 
       if (f.presubset) {
-        const src = resolve(pkgDir, `files/${f.dir}-${subset}-${weight}-normal.woff2`);
+        const src = resolve(pkgDir, `files/${f.dir}-${subset}-${weight}-${style}.woff2`);
         try {
           statSync(src);
         } catch {
@@ -91,7 +107,7 @@ for (const f of FAMILIES) {
         }
         cpSync(src, outPath);
       } else {
-        const src = resolve(pkgDir, f.source(weight));
+        const src = resolve(pkgDir, f.source(weight, style));
         const unicodes = (RANGES[subset] + (subset === 'latin' && f.extra ? ', ' + f.extra : ''))
           .replace(/U\+/g, '')
           .replace(/\s/g, '');
@@ -109,6 +125,7 @@ for (const f of FAMILIES) {
         family: f.family,
         dir: f.dir,
         weight,
+        style,
         subset,
         file: outName,
         range: RANGES[subset] + (subset === 'latin' && f.extra ? ', ' + f.extra : ''),
@@ -132,7 +149,11 @@ ${FAMILIES.map((f) => `     ${f.family} — ${f.note}`).join('\n')}
 
    У моноширинного в latin-сабсет добавлена псевдографика: вывод tree, рамки
    и спарклайны в терминале должны рисоваться той же гарнитурой, иначе
-   выравнивание рассыпается. */
+   выравнивание рассыпается.
+
+   Курсив настоящий у обеих гарнитур. У основного шрифта он в 400 и 700, у
+   моноширинного только в 400: им набраны комментарии в коде и .hljs-emphasis,
+   оба нормального веса. */
 `;
 
 const css =
@@ -142,7 +163,7 @@ const css =
       (f) => `
 @font-face {
   font-family: '${f.family}';
-  font-style: normal;
+  font-style: ${f.style};
   font-weight: ${f.weight};
   font-display: swap;
   src: url('../fonts/${f.dir}/${f.file}') format('woff2');

@@ -11,7 +11,7 @@
 
    Шрифты вшиты в SVG как data: URI. Картинку рендерят чужие площадки (GitHub
    проксирует её через camo, телеграм тянет как файл), внешний запрос к fonts/
-   оттуда не уйдёт, а без Onest обложка дизайн-системы набралась бы системным
+   оттуда не уйдёт, а без основного шрифта обложка дизайн-системы набралась бы системным
    гротеском. Вшиты только latin и cyrillic у двух начертаний — этого хватает на
    тексты обложки и держит файл в разумном весе.  */
 
@@ -43,10 +43,10 @@ const MARK_MASK = maskBody[1].trimEnd();
    unicode-range остаётся тем же, что в пакете, и не превращается в третью копию
    диапазонов. */
 const FACES = [
-  'onest/onest-400n-latin.woff2',
-  'onest/onest-400n-cyrillic.woff2',
-  'onest/onest-700n-latin.woff2',
-  'onest/onest-700n-cyrillic.woff2',
+  'ibm-plex-sans/ibm-plex-sans-400n-latin.woff2',
+  'ibm-plex-sans/ibm-plex-sans-400n-cyrillic.woff2',
+  'ibm-plex-sans/ibm-plex-sans-700n-latin.woff2',
+  'ibm-plex-sans/ibm-plex-sans-700n-cyrillic.woff2',
 ];
 
 const fontsCss = readFileSync(r('src/styles/fonts.css'), 'utf8');
@@ -71,6 +71,18 @@ const PANEL = {
   body: ['Цвет, шрифты, ритм и правила — в tokens.css.', 'Всё остальное из него выводится.'],
 };
 
+/* Моноширинный в обложку не вшит: Iosevka весит в полтора раза больше основного, а ради
+   пары строк мелким кеглем это не окупается. Значит, набор идёт тем, что найдёт
+   рендерер, и метрики у каждого свои — SF Mono, DejaVu Sans Mono и Consolas
+   дают разную ширину одной и той же строки. Всё, вокруг чего рисуется рамка или
+   подчёркивание, поэтому объявляет textLength: рендерер обязан уложить строку
+   ровно в эту ширину, подгоняя межбуквенное расстояние. Так плашка считается от
+   текста, а не наоборот, и «PRINT» не вылезает за скругление на чужой машине.  */
+const MONO_TRACK = 9.3; // ширина знака 13px mono с разрядкой, на глаз по рендеру
+const monoWidth = (text, track = MONO_TRACK) => Math.round(text.length * track);
+
+const PILL = 'TOKENS · CSS · REACT · SLIDEV · PRINT';
+
 const panel = (x, c, { label, link, ratio }) => `
   <g transform="translate(${x}, 326)">
     <rect width="548" height="236" rx="14" fill="${c['bg-elev']}" stroke="${c.border}"/>
@@ -82,9 +94,9 @@ const panel = (x, c, { label, link, ratio }) => `
     <text class="sans" x="24" y="122" font-size="16" fill="${c['fg-muted']}">${PANEL.body[0]}</text>
     <text class="sans" x="24" y="146" font-size="16" fill="${c['fg-muted']}">${PANEL.body[1]}</text>
 
-    <text class="mono" x="24" y="186" font-size="15" fill="${c.accent}">${link}</text>
-    <line x1="24" y1="192" x2="${24 + link.length * 9}" y2="192" stroke="${c.accent}" stroke-opacity="0.5"/>
-    <text class="mono" x="${24 + link.length * 9 + 14}" y="186" font-size="15" fill="${c['fg-subtle']}">${ratio} AA</text>
+    <text class="mono" x="24" y="186" font-size="15" textLength="${monoWidth(link, 9)}" lengthAdjust="spacing" fill="${c.accent}">${link}</text>
+    <line x1="24" y1="192" x2="${24 + monoWidth(link, 9)}" y2="192" stroke="${c.accent}" stroke-opacity="0.5"/>
+    <text class="mono" x="${24 + monoWidth(link, 9) + 14}" y="186" font-size="15" fill="${c['fg-subtle']}">${ratio} AA</text>
 
     ${Array.from({ length: 8 }, (_, i) =>
       `<circle cx="${32 + i * 30}" cy="214" r="9" fill="${c[`chart-${i + 1}`]}"/>`,
@@ -128,7 +140,7 @@ ${MARK_MASK}
 
     <style>
       ${embedded}
-      .sans { font-family: Onest, ${tokens.font['font-sans'].replace(/^[^,]+,\s*/, '')} }
+      .sans { font-family: ${tokens.font['font-sans']} }
       .mono { font-family: ${tokens.font['font-mono']} }
     </style>
   </defs>
@@ -144,8 +156,8 @@ ${MARK_MASK}
   </g>
 
   <g transform="translate(72, 96)">
-    <rect width="330" height="28" rx="14" fill="${D['accent-300']}" fill-opacity="0.12" stroke="${D['accent-300']}" stroke-opacity="0.45"/>
-    <text class="mono" x="16" y="19" font-size="13" letter-spacing="1.6" fill="${D['accent-300']}">TOKENS · CSS · REACT · SLIDEV · PRINT</text>
+    <rect width="${monoWidth(PILL) + 32}" height="28" rx="14" fill="${D['accent-300']}" fill-opacity="0.12" stroke="${D['accent-300']}" stroke-opacity="0.45"/>
+    <text class="mono" x="${(monoWidth(PILL) + 32) / 2}" y="19" font-size="13" letter-spacing="1.6" textLength="${monoWidth(PILL)}" lengthAdjust="spacing" text-anchor="middle" fill="${D['accent-300']}">${PILL}</text>
 
     <text class="sans" x="0" y="118" font-size="76" font-weight="700" letter-spacing="-1.5" fill="${D.fg}">mishka-ds</text>
 
