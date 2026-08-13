@@ -1,7 +1,7 @@
 {
   "pkg": "@jtprogru/mishka-ds",
   "globalName": "MishkaDS",
-  "projectId": "0c6a4f9a-ae25-4a87-b3cf-907a341dabbe",
+  "projectId": "<project id из Claude Design, см. NOTES.md>",
   "shape": "package",
   "buildCmd": "npm run build",
   "srcDir": "src",

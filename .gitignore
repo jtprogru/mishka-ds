@@ -6,7 +6,13 @@ demo/demo.js
 
 # Инструментарий синхронизации с Claude Design: staged-скрипты, их зависимости,
 # браузеры playwright и регенерируемая сборка. Коммитятся только входы —
-# config.json, NOTES.md, conventions.md и авторские превью.
+# config.example.json, NOTES.md, conventions.md и авторские превью.
+#
+# Сам config.json не коммитится: в нём projectId — идентификатор проекта в
+# Claude Design, привязанный к аккаунту. Не ключ и не пароль, но и не то, что
+# стоит держать в публичном репозитории. Рабочий файл делается из примера:
+# cp .design-sync/config.example.json .design-sync/config.json
+.design-sync/config.json
 .ds-sync/
 ds-bundle/
 .design-sync/.cache/

@@ -2,7 +2,7 @@
   "name": "@jtprogru/mishka-ds",
   "version": "0.1.0",
   "description": "Дизайн-система «Мишка на сервере»: единые токены, шрифты, знак и компоненты для блога, резюме, презентаций, схем и печати",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "author": "Mikhail Savin",
   "type": "module",
   "sideEffects": [
@@ -36,7 +36,9 @@
     "skills",
     "README.md",
     "BRAND.md",
-    "MIGRATION.md"
+    "MIGRATION.md",
+    "LICENSE",
+    "LICENSES"
   ],
   "scripts": {
     "build": "node scripts/build.mjs",

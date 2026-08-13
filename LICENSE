@@ -1,0 +1,62 @@
+# Лицензии mishka-ds
+
+Copyright © 2026 Михаил Савин (Mikhail Savin), https://jtprog.ru
+
+    Required Notice: Copyright © 2026 Михаил Савин (https://jtprog.ru)
+
+В репозитории лежат четыре вида материалов, и условия у них разные. Единой лицензии на весь репозиторий нет: код можно брать под ограничениями, бренд нельзя брать вообще. Если файл не попадает ни в один раздел ниже — считается, что он под разделом 1.
+
+## 1. Код, токены и стили — PolyForm Noncommercial 1.0.0
+
+Полный текст: [`LICENSES/PolyForm-Noncommercial-1.0.0.md`](LICENSES/PolyForm-Noncommercial-1.0.0.md), он же на https://polyformproject.org/licenses/noncommercial/1.0.0
+
+Покрывает: `src/` (кроме перечисленного в разделе 2), `scripts/`, `demo/`, `tokens/`, `Makefile`, `package.json`, `tsconfig.json`, `.design-sync/previews/` и всё, что из них собирается в `dist/`.
+
+Коротко, без замены текста лицензии: этим можно пользоваться, менять и распространять для любой некоммерческой цели — личные проекты, учёба, исследования, некоммерческие организации, госучреждения. Любое коммерческое использование требует отдельной письменной лицензии от автора. Гарантий никаких.
+
+При распространении копии или производной работы вы обязаны передать дальше и текст лицензии, и строку `Required Notice` выше.
+
+## 2. Бренд — все права защищены
+
+К этому разделу относятся:
+
+- всё в `brand/` — артворк знака `mishka-mark-source.svg`, производные `mark.svg`, `logo.svg`, `mascot.svg`, `favicon-light.svg`, `favicon-dark.svg`, макет визитки `card.html`;
+- геометрия знака в коде: `src/components/markGeometry.ts` и компонент `BearMark` в `src/components/site.tsx`, а также его использование в `src/components/print.tsx`;
+- `BRAND.md` — брендбук: устройство знака, голос, правила поверхностей;
+- названия и адреса идентичности: «Мишка на сервере», «mishka», «mishka-ds» как имя этой системы, `jtprog.ru`, `savinmi.ru`, `@jtprogru`.
+
+Никакой лицензии на эти материалы не выдаётся. Их нельзя копировать, изменять, перерисовывать, встраивать в свои сайты, темы, презентации, печать или другие продукты, коммерческие и некоммерческие, без предварительного письменного разрешения автора. Разрешение на код по разделу 1 прав на бренд не даёт.
+
+Что можно без разрешения: смотреть, цитировать в обзоре или разборе с указанием авторства, форкнуть репозиторий ради работы с кодом — при условии, что в форке материалы этого раздела заменены на свои. Медведь остаётся моим.
+
+## 3. Документация — CC BY-NC-SA 4.0
+
+Покрывает: `README.md`, `MIGRATION.md`, `CLAUDE.md`, `skills/`, `.design-sync/conventions.md`, `.design-sync/NOTES.md`.
+
+Условия: https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ru — с указанием авторства, некоммерчески, производные на тех же условиях. `BRAND.md` сюда не входит, он в разделе 2.
+
+## 4. Шрифты — SIL Open Font License 1.1
+
+Файлы в `fonts/` — сабсеты чужих гарнитур, не мои. Права принадлежат их авторам, условия — OFL 1.1, тексты лежат рядом:
+
+- Iosevka, © Renzhi Li (aka. Belleve Invis) — [`fonts/LICENSE-iosevka.txt`](fonts/LICENSE-iosevka.txt);
+- Onest, © The Onest Project Authors — [`fonts/LICENSE-onest.txt`](fonts/LICENSE-onest.txt).
+
+`.woff2` в `fonts/` получены нарезкой на unicode-range из пакетов `@fontsource/iosevka` и `@fontsource/onest` скриптом `scripts/gen-fonts.mjs`, то есть это модифицированные версии. Имена гарнитур сохранены, разделы 1–3 на них не распространяются: OFL 1.1 остаётся OFL 1.1 при любом дальнейшем распространении.
+
+## Как получить разрешение
+
+Коммерческая лицензия на код или разрешение на бренд — письмом на jtprogru@gmail.com или в https://t.me/jtprogru. Спрашивать нормально, ответ бывает «да».
+
+---
+
+## English summary
+
+This repository is **not** under a single license.
+
+- **Code, tokens, styles** — [PolyForm Noncommercial 1.0.0](LICENSES/PolyForm-Noncommercial-1.0.0.md). Free for any noncommercial purpose; commercial use requires a separate written license.
+- **Brand** — all rights reserved. The bear mark (`brand/`, `src/components/markGeometry.ts`, `BearMark`), the brand book (`BRAND.md`) and the names «Мишка на сервере» / mishka-ds may not be copied, modified or reused without prior written permission. Fork the code, replace the mark.
+- **Documentation** — CC BY-NC-SA 4.0.
+- **Fonts** in `fonts/` — third-party, SIL OFL 1.1, see the license files next to them.
+
+Contact: jtprogru@gmail.com

@@ -2,7 +2,7 @@ import { Icon, SiteFooter } from '@jtprogru/mishka-ds';
 
 export const Full = () => (
   <SiteFooter
-    copyright="© 2026 Михаил Савин. Тексты — CC BY-NC-SA 4.0, код — MIT."
+    copyright="© 2026 Михаил Савин. Тексты — CC BY-NC-SA 4.0, код — PolyForm NC 1.0."
     commit={{ sha: '2673c50', href: '#' }}
     powered="Собрано Hugo и темой mishka"
     nav={{
