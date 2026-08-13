@@ -32,9 +32,12 @@
 | Старые имена токенов | `compat.css` | блог, резюме, слайды — до миграции |
 | Шрифты | `fonts.css` + `fonts/` | всё |
 | База: reset, типографика, каркас, a11y | `base.css` | web-поверхности |
+| Обвязка сайта: шапка, подвал, тогглер | `components-shell.css` | блог и React |
 | Компоненты | `components.css` | блог и React |
-| Подсветка синтаксиса | `code.css` | React, где код красит `highlight.js` |
-| Печать: A4, визитка, `@media print` | `print.css` | резюме, визитки, раздатка |
+| Подсветка синтаксиса · highlight.js | `code.css` | React, где код красит `highlight.js` |
+| Подсветка синтаксиса · Chroma | `dist/chroma/chroma.css` (генерится) | блог на Hugo |
+| Печать веб-страницы: `@media print` | `print-web.css` | блог, резюме |
+| Печатный документ: лист A4, визитка | `print-sheet.css` | резюме, визитки, раздатка |
 
 React-компоненты собственных стилей не имеют: они выводят те же классы, что и Go-шаблоны темы (`.callout--warn`, `.post-card__title`), поэтому одна таблица обслуживает и сайт, и превью, и дизайн-агента.
 
@@ -59,12 +62,13 @@ Makefile — обёртка над `scripts/*.mjs` для того, кто па�
 ```js
 import '@jtprogru/mishka-ds/styles.css';          // всё
 import '@jtprogru/mishka-ds/tokens.css';          // только переменные
-import '@jtprogru/mishka-ds/print.css';           // бумага
+import '@jtprogru/mishka-ds/print-web.css';       // печать страницы из браузера
+import '@jtprogru/mishka-ds/print-sheet.css';     // лист A4 и визитка
 import { theme, shortcuts } from '@jtprogru/mishka-ds/unocss';   // Slidev
 import tokens from '@jtprogru/mishka-ds/tokens.json';            // инструменты
 ```
 
-Плюс `dist/mermaid/*.json` для схем, `dist/brand/*` для знака и маскота, `dist/styles/fonts-hugo.css` для Hugo с абсолютными путями к шрифтам.
+Плюс `dist/chroma/chroma.css` для подсветки кода в Hugo, `dist/mermaid/*.json` для схем, `dist/brand/*` для знака и маскота, `dist/styles/fonts-hugo.css` для Hugo с абсолютными путями к шрифтам.
 
 React:
 
@@ -84,7 +88,7 @@ import { ThemeProvider, Callout, CodeBlock } from '@jtprogru/mishka-ds';
 
 ## Всё, что генерится из токенов
 
-Токены разбираются в `tokens/tokens.json`, и из него выводится остальное: scoped-темы, пресет UnoCSS для Slidev, темы mermaid для светлой и тёмной схемы, вариант `fonts.css` с абсолютными путями. Руками эти файлы не править — перезапишутся на сборке.
+Токены разбираются в `tokens/tokens.json`, и из него выводится остальное: scoped-темы, пресет UnoCSS для Slidev, темы mermaid для светлой и тёмной схемы, раскладка классов Chroma на роли `--syn-*` для Hugo, вариант `fonts.css` с абсолютными путями. Руками эти файлы не править — перезапишутся на сборке.
 
 Шрифты собираются отдельным ручным шагом: `node scripts/gen-fonts.mjs` режет `@fontsource/ibm-plex-sans` и `@fontsource/iosevka` на unicode-range сабсеты и пишет `fonts/` вместе с `fonts.css`. Нарезаются оба начертания: прямое в 400 и 700, курсив у основного шрифта в 400 и 700, у моноширинного в 400. Нужен `pyftsubset`; результат коммитится, поэтому обычная сборка его не требует.
 

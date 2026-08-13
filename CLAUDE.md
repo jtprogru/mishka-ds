@@ -32,6 +32,7 @@ src/styles/tokens.css
   ├─ tokens/tokens.json          (gen-tokens-json.mjs) — вход для инструментов, не умеющих CSS
   │    ├─ src/styles/themes-scoped.css   (build.mjs, inline)
   │    ├─ dist/mermaid/*.json            (gen-mermaid-theme.mjs)
+  │    ├─ dist/chroma/chroma.css        (gen-chroma.mjs) — классы Chroma → --syn-*
   │    └─ dist/unocss/index.js           (gen-unocss-preset.mjs) — для Slidev
   ├─ src/styles/compat.css       (gen-compat.mjs) — алиасы старых имён трёх проектов
   └─ dist/styles/fonts-hugo.css  (build.mjs) — fonts.css с абсолютными путями для Hugo
@@ -39,9 +40,9 @@ src/styles/tokens.css
 
 `scripts/build.mjs` — единственный оркестратор, порядок шагов в нём существенный: знак → `check-css` → `tokens.json` → производные от токенов → копирование стилей → esbuild (ESM + CJS) → `.d.ts` → mermaid/unocss/contrast → бандл витрины. `check-css` стоит до генерации именно потому, что `tokens.json` собирается регуляркой и битого синтаксиса не замечает, а браузер по правилу восстановления теряет объявление молча.
 
-CSS слоями, порядок `@import` в `src/styles/index.css` обязателен: `tokens → themes-scoped → compat → fonts → base → components → code → slides → print`. `dist/styles/mishka-ds.css` — плоская склейка тех же слоёв для потребителей, не разворачивающих `@import` (конвертер design-sync, инлайнеры).
+CSS слоями, порядок `@import` в `src/styles/index.css` обязателен: `tokens → themes-scoped → compat → fonts → base → components-shell → components → code → slides → print-web → print-sheet`. `dist/styles/mishka-ds.css` — плоская склейка тех же слоёв для потребителей, не разворачивающих `@import` (конвертер design-sync, инлайнеры).
 
-React-слой собственных стилей не имеет. Компоненты выводят те же классы, что и Go-шаблоны темы `hugo-mishka` (`.callout--warn`, `.post-card__title`), поэтому `components.css` обслуживает и сайт, и превью. Добавляя компонент, добавляй класс в `components.css`, а не инлайновые стили; публичный API экспортируется из `src/index.ts` (значение и тип отдельными `export`/`export type`).
+React-слой собственных стилей не имеет. Компоненты выводят те же классы, что и Go-шаблоны темы `hugo-mishka` (`.callout--warn`, `.post-card__title`), поэтому `components.css` обслуживает и сайт, и превью. Добавляя компонент, добавляй класс в `components.css` (шапку, подвал и тогглер — в `components-shell.css`), а не инлайновые стили; публичный API экспортируется из `src/index.ts` (значение и тип отдельными `export`/`export type`).
 
 Тема включается тремя способами, и все три должны работать: `data-theme` на `:root` (сайт), `data-theme` на любом узле (превью и витрина, где светлая и тёмная стоят рядом), класс `dark`/`light` на `html` (Slidev). Отсюда генерация `themes-scoped.css`: дублировать три десятка значений руками — гарантированное расхождение. По той же причине генерится `compat.css` — кастомное свойство подставляет `var()` в момент объявления, поэтому алиасы надо переобъявлять в каждом блоке, где переключается тема.
 

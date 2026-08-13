@@ -30,9 +30,11 @@
     "./unocss": {
       "import": "./dist/unocss/index.js"
     },
-    "./print.css": "./dist/styles/print.css",
+    "./print-web.css": "./dist/styles/print-web.css",
+    "./print-sheet.css": "./dist/styles/print-sheet.css",
     "./brand/*": "./dist/brand/*",
-    "./mermaid/*": "./dist/mermaid/*"
+    "./mermaid/*": "./dist/mermaid/*",
+    "./chroma/*": "./dist/chroma/*"
   },
   "files": [
     "dist",

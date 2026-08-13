@@ -92,7 +92,7 @@ writeFileSync(
       design-sync, инлайнерам, сборщикам без поддержки CSS-модулей. Пути к
       шрифтам остаются валидными: файл лежит в том же каталоге, что и fonts.css. */
 {
-  const order = ['tokens.css', 'themes-scoped.css', 'compat.css', 'fonts.css', 'base.css', 'components.css', 'code.css', 'slides.css', 'print.css'];
+  const order = ['tokens.css', 'themes-scoped.css', 'compat.css', 'fonts.css', 'base.css', 'components-shell.css', 'components.css', 'code.css', 'slides.css', 'print-web.css', 'print-sheet.css'];
   const flat = order
     .map((name) => `/* ========== ${name} ========== */\n` + readFileSync(r('src/styles', name), 'utf8'))
     .join('\n');
@@ -125,6 +125,7 @@ run(process.execPath, ['node_modules/typescript/bin/tsc', '--emitDeclarationOnly
       она показывает палитру в обеих темах, и нарисованная копия разъехалась бы
       с токенами при первой правке цвета. */
 run(process.execPath, ['scripts/gen-mermaid-theme.mjs']);
+run(process.execPath, ['scripts/gen-chroma.mjs']);
 run(process.execPath, ['scripts/gen-unocss-preset.mjs']);
 run(process.execPath, ['scripts/gen-cover.mjs']);
 run(process.execPath, ['scripts/check-contrast.mjs']);
@@ -144,4 +145,4 @@ await build({
   alias: { '@jtprogru/mishka-ds': r('src/index.ts') },
 });
 
-console.log('\nсобрано: dist/index.js, dist/index.cjs, dist/index.d.ts, dist/styles/*, dist/mermaid/*, demo/demo.js');
+console.log('\nсобрано: dist/index.js, dist/index.cjs, dist/index.d.ts, dist/styles/*, dist/mermaid/*, dist/chroma/*, demo/demo.js');
