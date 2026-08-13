@@ -1522,6 +1522,13 @@ pre.mermaid:not([data-processed="true"]) {
 
 .mermaid svg { max-width: 100%; height: auto; }
 
+/* Метка ноды приезжает как <span class="nodeLabel"><p>…</p></span>, и цвет
+   диаграмма задаёт только span'у. Прозаическое `p { color: var(--fg) }` из
+   base.css матчится на <p> напрямую, а прямое правило всегда бьёт
+   наследование, поэтому цвет из темы схемы до текста не доходил. Возвращаем
+   наследование: за палитру отвечает mermaid-config, а не типографика. */
+.mermaid p { color: inherit; }
+
 /* Pre-rendered SVG-варианты под light/dark тему сайта.
    Скрипт scripts/mermaid-prerender.py генерит две версии (<hash>.svg +
    <hash>.dark.svg), render hook вставляет обе — здесь прячем неактивную.

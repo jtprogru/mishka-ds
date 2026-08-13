@@ -13,45 +13,62 @@ import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const tokens = JSON.parse(readFileSync(resolve(root, 'tokens/tokens.json'), 'utf8'));
 
+/* Токен обязан существовать. Раньше опечатка в имени давала undefined, а
+   JSON.stringify молча выбрасывает такие поля — конфиг уезжал без половины
+   переменных, и mermaid добирал их своими дефолтами. Стоило это невидимых
+   связей на схемах: lineColor база выводит как invert(background), а
+   background у нас "transparent", инверсия которого снова прозрачная. */
+function tokenPicker(scheme) {
+  const c = tokens.color[scheme];
+  return (name) => {
+    if (c[name] === undefined) {
+      throw new Error(
+        `gen-mermaid-theme: нет токена color.${scheme}.${name} в tokens/tokens.json`,
+      );
+    }
+    return c[name];
+  };
+}
+
 /** mermaid не понимает var() и color-mix() — сюда едут только развёрнутые hex. */
 function themeFor(scheme) {
-  const c = tokens.color[scheme];
+  const c = tokenPicker(scheme);
   return {
     theme: 'base',
     themeVariables: {
       background: 'transparent',
 
       // Узлы: поверхность карточки, текст и рамка — как у .proj-card в UI.
-      primaryColor: c['bg-elevated'],
-      primaryTextColor: c.text,
-      primaryBorderColor: c['border-strong'],
-      secondaryColor: c['bg-sunken'],
-      secondaryTextColor: c.text,
-      secondaryBorderColor: c.border,
+      primaryColor: c('bg-elev'),
+      primaryTextColor: c('fg'),
+      primaryBorderColor: c('border-strong'),
+      secondaryColor: c('bg-sunken'),
+      secondaryTextColor: c('fg'),
+      secondaryBorderColor: c('border'),
 
       // Третичный — единственное акцентное пятно на схеме (Sapphire).
-      tertiaryColor: c['accent-soft'],
-      tertiaryTextColor: c.text,
-      tertiaryBorderColor: c['accent-400'],
+      tertiaryColor: c('accent-soft'),
+      tertiaryTextColor: c('fg'),
+      tertiaryBorderColor: c('accent-400'),
 
-      lineColor: c['text-muted'],
-      textColor: c.text,
+      lineColor: c('fg-muted'),
+      textColor: c('fg'),
 
-      mainBkg: c['bg-elevated'],
-      secondBkg: c['bg-sunken'],
-      nodeBorder: c['border-strong'],
-      clusterBkg: c['bg-sunken'],
-      clusterBorder: c.border,
-      edgeLabelBackground: c.bg,
+      mainBkg: c('bg-elev'),
+      secondBkg: c('bg-sunken'),
+      nodeBorder: c('border-strong'),
+      clusterBkg: c('bg-sunken'),
+      clusterBorder: c('border'),
+      edgeLabelBackground: c('bg'),
 
-      noteBkgColor: c['accent-soft'],
-      noteTextColor: c.text,
-      noteBorderColor: c['accent-400'],
+      noteBkgColor: c('accent-soft'),
+      noteTextColor: c('fg'),
+      noteBorderColor: c('accent-400'),
 
       // Ошибка: подложка нейтральная, смысл несёт цвет текста и рамки —
       // §8 BRANDING, цвет не единственный носитель смысла.
-      errorBkgColor: c['bg-sunken'],
-      errorTextColor: c['c-danger'],
+      errorBkgColor: c('bg-sunken'),
+      errorTextColor: c('c-danger'),
 
       fontFamily: tokens.font['font-sans'],
       fontSize: '15px',
