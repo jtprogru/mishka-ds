@@ -132,8 +132,25 @@ const maskBody = (indent, extraTransform) => {
 
 const GENERATED = `<!-- СГЕНЕРИРОВАНО scripts/gen-mark-geometry.mjs из ${SOURCE} — не править руками. -->`;
 
-writeFileSync(
-  r('brand/mark.svg'),
+/* Отдельный `.svg` браузер разбирает XML-парсером: `<img src=…>`, url() в CSS,
+   <object>, rsvg-convert. В XML-комментарии запрещена последовательность `--`
+   целиком, а не только `-->`, поэтому имя токена вида --bg, попавшее в
+   пояснение, роняет файл — не «часть не отрисуется», а не отрисуется ничего.
+   Инлайн в HTML при этом работает (HTML-парсер к комментариям снисходителен),
+   так что по симптому баг ловится только у потребителя. Проверяем на записи. */
+const writeSvg = (path, text) => {
+  for (const [, body] of text.matchAll(/<!--([\s\S]*?)-->/g)) {
+    if (body.includes('--') || body.endsWith('-'))
+      throw new Error(
+        `${path}: XML-комментарий содержит "--" — файл не well-formed и не отрисуется как <img>. ` +
+          `Имена кастомных свойств в комментариях пиши без ведущих дефисов.`,
+      );
+  }
+  writeFileSync(r(path), text);
+};
+
+writeSvg(
+  'brand/mark.svg',
   `<svg viewBox="${viewBox}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Мишка на сервере">
 ${GENERATED}
   <!--
@@ -162,8 +179,8 @@ const scale = markH / vbH;
 const markW = vbW * scale;
 const textX = Math.round(markW + 16);
 
-writeFileSync(
-  r('brand/logo.svg'),
+writeSvg(
+  'brand/logo.svg',
   `<svg viewBox="0 0 ${LOGO_W} ${LOGO_H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Мишка на сервере">
 ${GENERATED}
   <!--
@@ -188,9 +205,34 @@ ${maskBody('    ', `translate(0 ${(LOGO_H - markH) / 2}) scale(${scale.toFixed(6
 /* Маскот. Тот же медведь, но крашеный, а не вырубленный: маскот — единственное
    место, где бренду разрешено быть тёплым (BRAND.md §0), и силуэт эту теплоту не
    передаёт. Оба тона взяты из системы: тёмный — Peach из шкалы --c-warn-text,
-   светлый — --bg. Своих цветов у маскота нет. */
-const MASCOT_INK = '#9a3f0a';
-const MASCOT_PAPER = '#eff1f5';
+   светлый — --bg. Своих цветов у маскота нет.
+
+   Значения читаются из src/styles/tokens.css, а не из tokens/tokens.json: знак —
+   шаг 0 сборки, JSON генерится позже, и на прогоне, где токен поменяли, здесь
+   лежало бы прошлое значение.
+
+   Обе заливки — из светлой темы, и это не недосмотр: маскот самодостаточная
+   иллюстрация, а не элемент интерфейса, и на тёмном фоне он остаётся тем же
+   рисунком на светлой бумаге. Второго, тёмного варианта нет. */
+const tokensCss = readFileSync(r('src/styles/tokens.css'), 'utf8');
+const lightBlock = (() => {
+  const m = tokensCss.match(/:root\[data-theme="light"\][^{]*\{([\s\S]*?)\n\}/);
+  if (!m) throw new Error('src/styles/tokens.css: не найден блок :root[data-theme="light"]');
+  return m[1].replace(/\/\*[\s\S]*?\*\//g, '');
+})();
+
+const lightToken = (name) => {
+  const m = lightBlock.match(new RegExp(`--${name}\\s*:\\s*([^;]+);`));
+  if (!m) throw new Error(`src/styles/tokens.css: в светлой теме нет токена --${name}`);
+  const value = m[1].trim();
+  /* В SVG уезжает литерал: var() внутри fill= маскот бы не пережил. */
+  if (!/^#[0-9a-f]{3,8}$/i.test(value))
+    throw new Error(`src/styles/tokens.css: --${name} = "${value}", а маскоту нужен литеральный hex`);
+  return value;
+};
+
+const MASCOT_INK = lightToken('c-warn-text');
+const MASCOT_PAPER = lightToken('bg');
 
 const paintedBody = (indent) => {
   const rows = ordered.map(({ d, role }) => {
@@ -203,8 +245,8 @@ const paintedBody = (indent) => {
   return `${indent}<g${transform ? ` transform="${transform}"` : ''}>\n${rows.join('\n')}\n${indent}</g>`;
 };
 
-writeFileSync(
-  r('brand/mascot.svg'),
+writeSvg(
+  'brand/mascot.svg',
   `<svg viewBox="${viewBox}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Маскот «Мишка на сервере»">
 ${GENERATED}
   <!--
@@ -212,8 +254,12 @@ ${GENERATED}
     Знак живёт монохромным и наследует цвет текста; маскот несёт теплоту бренда
     (BRAND.md §0) и потому имеет собственные заливки.
 
-    Оба тона — из системы: ${MASCOT_INK} (Peach, шкала --c-warn-text) и
-    ${MASCOT_PAPER} (--bg). Оранжевого #fb923c из палитры 0.1 здесь больше нет.
+    Оба тона — из системы, читаются из tokens.css: ${MASCOT_INK} (Peach, токен
+    c-warn-text светлой темы) и ${MASCOT_PAPER} (токен bg). Оранжевого #fb923c
+    из палитры 0.1 здесь больше нет.
+
+    Имена токенов здесь без ведущих дефисов намеренно: XML запрещает "-" дважды
+    подряд внутри комментария, и такой файл не рисуется как img.
   -->
 ${paintedBody('  ')}
 </svg>
